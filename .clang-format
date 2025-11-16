@@ -4,3 +4,24 @@ IndentWidth: 4
 TabWidth: 4
 UseTab: Never
 ColumnLimit: 100
+# Always use braces for if/while/for, even for one-liners
+InsertBraces: true
+# Break after open brace for braced lists
+Cpp11BracedListStyle: false
+# Always break before braces for initialization lists
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterControlStatement: Never
+  AfterEnum: false
+  AfterFunction: false
+  AfterStruct: false
+  BeforeLambdaBody: false
+# Put each initializer on a new line
+AllowShortBlocksOnASingleLine: Never
+BinPackArguments: false
+BinPackParameters: false
+# Never allow short functions on a single line
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortLambdasOnASingleLine: None

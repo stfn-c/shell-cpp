@@ -1,38 +1,12 @@
+#include "builtin_commands.hpp"
 #include <cstddef>
-#include <functional>
 #include <iostream>
 #include <string>
-#include <unordered_map>
 #include <vector>
-
-int cmd_exit(const std::vector<std::string> &args) {
-    std::exit(0);
-
-    return 0;
-}
-
-int cmd_echo(const std::vector<std::string> &args) {
-    bool first = true;
-
-    for (const auto &arg : args) {
-        if (!first) {
-            std::cout << " ";
-        }
-
-        std::cout << arg;
-        first = false;
-    }
-    std::cout << "\n";
-
-    return 0;
-}
 
 int main() {
     std::cout << std::unitbuf;
     std::cerr << std::unitbuf;
-
-    const std::unordered_map<std::string, std::function<int(const std::vector<std::string> &)>>
-        commands{{"exit", cmd_exit}, {"echo", cmd_echo}};
 
     while (true) {
         std::cout << "$ ";
@@ -65,8 +39,8 @@ int main() {
             continue;
         }
 
-        const auto it = commands.find(args[0]);
-        if (it == commands.end()) {
+        const auto it = builtin_commands.find(args[0]);
+        if (it == builtin_commands.end()) {
             std::cout << input << ": command not found\n";
         } else {
             std::vector<std::string> cmd_args(args.begin() + 1, args.end());
