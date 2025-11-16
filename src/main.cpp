@@ -54,7 +54,7 @@ int main() {
 
                 std::vector<std::string> cmd_args(args.begin() + 1, args.end());
 
-                execute_command(pathToExecutable, cmd_args);
+                execute_command(pathToExecutable, args);
                 continue;
             }
         }
