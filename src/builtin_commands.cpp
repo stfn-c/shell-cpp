@@ -36,7 +36,7 @@ int builtin_type(const std::vector<std::string> &args) {
         std::cout << args[0] << " is a shell builtin\n";
         return 0;
     } else {
-        std::cout << args[0] << " not found\n";
+        std::cout << args[0] << ": not found\n";
         return 1;
     }
 }

@@ -41,7 +41,7 @@ int main() {
 
         const auto it = builtin_commands.find(args[0]);
         if (it == builtin_commands.end()) {
-            std::cout << input << ": command not found\n";
+            std::cout << args[0] << ": command not found\n";
         } else {
             std::vector<std::string> cmd_args(args.begin() + 1, args.end());
             it->second(cmd_args);
