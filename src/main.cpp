@@ -1,4 +1,6 @@
 #include "builtin_commands.hpp"
+#include "path_utils.hpp"
+#include "process_utils.hpp"
 #include <cstddef>
 #include <iostream>
 #include <string>
@@ -40,12 +42,24 @@ int main() {
         }
 
         const auto it = builtin_commands.find(args[0]);
-        if (it == builtin_commands.end()) {
-            std::cout << args[0] << ": command not found\n";
-        } else {
+        if (it != builtin_commands.end()) {
             std::vector<std::string> cmd_args(args.begin() + 1, args.end());
             it->second(cmd_args);
+            continue;
+        } else {
+            std::optional<fs::path> foundExecutable = find_executable_in_path(args[0]);
+
+            if (foundExecutable.has_value()) {
+                const std::string pathToExecutable = foundExecutable.value();
+
+                std::vector<std::string> cmd_args(args.begin() + 1, args.end());
+
+                execute_command(pathToExecutable, cmd_args);
+                continue;
+            }
         }
+
+        std::cout << args[0] << ": command not found\n";
     }
 
     return 0;
