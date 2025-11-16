@@ -1,7 +1,7 @@
 #include "builtin_commands.hpp"
 #include "path_utils.hpp"
-#include <iostream>
 #include <cstdlib>
+#include <iostream>
 
 const std::unordered_map<std::string, std::function<int(const std::vector<std::string> &)>>
     builtin_commands = { { "exit", builtin_exit },
@@ -38,12 +38,12 @@ int builtin_type(const std::vector<std::string> &args) {
         std::cout << args[0] << " is a shell builtin\n";
         return 0;
     }
- 
+
     std::optional<fs::path> found_executable = find_executable_in_path(args[0]);
 
-    if(found_executable.has_value()) {
+    if (found_executable.has_value()) {
         // is found, return
-        std::cout << args[0] << " is " << found_executable.value();
+        std::cout << args[0] << " is " << found_executable.value() << "\n";
         return 0;
     }
 
