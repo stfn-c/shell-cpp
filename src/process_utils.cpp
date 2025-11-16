@@ -16,7 +16,6 @@ int execute_command(const std::string &path, const std::vector<std::string> &arg
         // Child Process - execute the command
         std::vector<char *> c_args;
 
-        c_args.push_back(const_cast<char *>(path.c_str()));
         for (const auto &arg : args) {
             c_args.push_back(const_cast<char *>(arg.c_str()));
         }
