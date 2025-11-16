@@ -12,8 +12,13 @@ int cmd_exit(const std::vector<std::string> &args) {
 }
 
 int cmd_echo(const std::vector<std::string> &args) {
-    for (size_t i = 0; i < args.size(); i++) {
-        std::cout << args[i] << (i < args.size() - 1) ? " " : "")
+    bool first = true;
+
+    for (const auto &arg : args) {
+        if (!first)
+            std::cout << " ";
+        std::cout << arg;
+        first = false;
     }
     std::cout << "\n";
 
@@ -25,7 +30,7 @@ int main() {
     std::cerr << std::unitbuf;
 
     const std::unordered_map<std::string, std::function<int(const std::vector<std::string> &)>>
-        commands{{"exit", cmd_exit}};
+        commands{{"exit", cmd_exit}, {"echo", cmd_echo}};
 
     while (true) {
         std::cout << "$ ";
