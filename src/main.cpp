@@ -52,8 +52,6 @@ int main() {
             if (foundExecutable.has_value()) {
                 const std::string pathToExecutable = foundExecutable.value();
 
-                std::vector<std::string> cmd_args(args.begin() + 1, args.end());
-
                 execute_command(pathToExecutable, args);
                 continue;
             }
