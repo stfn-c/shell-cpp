@@ -1,10 +1,9 @@
+#include <cstddef>
 #include <functional>
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
-
-std::unordered_map<std::string, std::function<int(const std::vector<std::string> &)>> commands;
 
 int cmd_exit(const std::vector<std::string> &args) {
     std::exit(0);
@@ -15,7 +14,8 @@ int main() {
     std::cout << std::unitbuf;
     std::cerr << std::unitbuf;
 
-    commands = {{"exit", cmd_exit}};
+    const std::unordered_map<std::string, std::function<int(const std::vector<std::string> &)>>
+        commands{{"exit", cmd_exit}};
 
     while (true) {
         std::cout << "$ ";
@@ -24,13 +24,14 @@ int main() {
 
         std::vector<std::string> args;
 
-        int idx = 0;
-        int count = 0;
+        size_t idx = 0;
+        size_t count = 0;
 
-        for (int i = 0; i < input.size(); i++) {
+        for (size_t i = 0; i < input.size(); i++) {
             if (input[i] == ' ') {
-                if (count > 0)
+                if (count > 0) {
                     args.push_back(input.substr(idx, count));
+                }
 
                 idx = i + 1;
                 count = 0;
@@ -38,13 +39,22 @@ int main() {
                 count++;
             }
         }
-        if (count > 0)
-            args.push_back(input.substr(idx, count));
 
-        if (commands.count(args[0]) == 0) {
+        if (count > 0) {
+            args.push_back(input.substr(idx, count));
+        }
+
+        if (args.empty()) {
+            continue;
+        }
+
+        auto it = commands.find(args[0]);
+        if (it == commands.end()) {
             std::cout << input << ": command not found\n";
         } else {
-            commands[args[0]](args);
+            it->second(args);
         }
     }
+
+    return 0;
 }
