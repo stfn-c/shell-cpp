@@ -15,8 +15,10 @@ int cmd_echo(const std::vector<std::string> &args) {
     bool first = true;
 
     for (const auto &arg : args) {
-        if (!first)
+        if (!first) {
             std::cout << " ";
+        }
+
         std::cout << arg;
         first = false;
     }
