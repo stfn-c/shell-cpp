@@ -43,7 +43,7 @@ int builtin_type(const std::vector<std::string> &args) {
 
     if (found_executable.has_value()) {
         // is found, return
-        std::cout << args[0] << " is " << found_executable.value() << "\n";
+        std::cout << args[0] << " is " << found_executable.value().string() << "\n";
         return 0;
     }
 
