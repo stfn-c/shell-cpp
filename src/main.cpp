@@ -7,6 +7,16 @@
 
 int cmd_exit(const std::vector<std::string> &args) {
     std::exit(0);
+
+    return 0;
+}
+
+int cmd_echo(const std::vector<std::string> &args) {
+    for (size_t i = 0; i < args.size(); i++) {
+        std::cout << args[i] << (i < args.size() - 1) ? " " : "")
+    }
+    std::cout << "\n";
+
     return 0;
 }
 
@@ -48,11 +58,12 @@ int main() {
             continue;
         }
 
-        auto it = commands.find(args[0]);
+        const auto it = commands.find(args[0]);
         if (it == commands.end()) {
             std::cout << input << ": command not found\n";
         } else {
-            it->second(args);
+            std::vector<std::string> cmd_args(args.begin() + 1, args.end());
+            it->second(cmd_args);
         }
     }
 
