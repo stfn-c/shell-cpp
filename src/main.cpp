@@ -1,3 +1,4 @@
+#pragma once
 #include "builtin_commands.hpp"
 #include "path_utils.hpp"
 #include "process_utils.hpp"
@@ -47,12 +48,12 @@ int main() {
             it->second(cmd_args);
             continue;
         } else {
-            std::optional<fs::path> foundExecutable = find_executable_in_path(args[0]);
+            std::optional<fs::path> found_executable = find_executable_in_path(args[0]);
 
-            if (foundExecutable.has_value()) {
-                const std::string pathToExecutable = foundExecutable.value();
+            if (found_executable.has_value()) {
+                const std::string path_to_executable = found_executable.value().string();
 
-                execute_command(pathToExecutable, args);
+                execute_command(path_to_executable, args);
                 continue;
             }
         }
