@@ -82,6 +82,8 @@ int builtin_cd(const std::vector<std::string> &args) {
         target_dir = shell_state.current_directory / target_dir;
     }
 
+    target_dir = fs::weakly_canonical(target_dir);
+
     if (!fs::exists(target_dir)) {
         std::cerr << "cd: " << args[0] << ": No such file or directory\n";
         return 1;
