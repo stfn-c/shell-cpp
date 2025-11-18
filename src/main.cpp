@@ -10,6 +10,33 @@
 
 ShellState shell_state;
 
+std::vector<std::string> parse_args(const std::string &input) {
+    std::vector<std::string> args;
+    std::string current_arg;
+    bool in_quotes = false;
+
+    for (char c : input) {
+        if (c == '\'' && in_quotes) {
+            in_quotes = false;
+        } else if (c == '\'' && !in_quotes) {
+            in_quotes = true;
+        } else if (!in_quotes && c == ' ') {
+            if (!current_arg.empty()) {
+                args.push_back(current_arg);
+                current_arg = "";
+            }
+        } else {
+            current_arg += c;
+        }
+    }
+
+    if (!current_arg.empty()) {
+        args.push_back(current_arg);
+    }
+
+    return args;
+}
+
 int main() {
     std::cout << std::unitbuf;
     std::cerr << std::unitbuf;
@@ -19,27 +46,7 @@ int main() {
         std::string input;
         std::getline(std::cin, input);
 
-        std::vector<std::string> args;
-
-        size_t idx = 0;
-        size_t count = 0;
-
-        for (size_t i = 0; i < input.size(); i++) {
-            if (input[i] == ' ') {
-                if (count > 0) {
-                    args.push_back(input.substr(idx, count));
-                }
-
-                idx = i + 1;
-                count = 0;
-            } else {
-                count++;
-            }
-        }
-
-        if (count > 0) {
-            args.push_back(input.substr(idx, count));
-        }
+        std::vector<std::string> args = parse_args(input);
 
         if (args.empty()) {
             continue;
