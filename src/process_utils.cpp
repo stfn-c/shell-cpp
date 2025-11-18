@@ -3,7 +3,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int execute_command(const std::string &path, const std::vector<std::string> &args) {
+int execute_command(const fs::path &path, const std::vector<std::string> &args) {
     pid_t pid = fork();
 
     if (pid < 0) {

@@ -1,12 +1,15 @@
 #include "builtin_commands.hpp"
 #include "path_utils.hpp"
+#include "shell_state.hpp"
 #include <cstdlib>
 #include <iostream>
 
 const std::unordered_map<std::string, std::function<int(const std::vector<std::string> &)>>
     builtin_commands = { { "exit", builtin_exit },
                          { "echo", builtin_echo },
-                         { "type", builtin_type } };
+                         { "type", builtin_type },
+                         { "pwd", builtin_pwd },
+                         { "cd", builtin_cd } };
 
 [[noreturn]] int builtin_exit(const std::vector<std::string> &args) {
     std::exit(0);
@@ -50,4 +53,16 @@ int builtin_type(const std::vector<std::string> &args) {
     std::cout << args[0] << ": not found\n";
 
     return 1;
+}
+
+int builtin_pwd(const std::vector<std::string> &args) {
+    std::cout << shell_state.current_directory.string() << "\n";
+
+    return 0;
+}
+
+int builtin_cd(const std::vector<std::string> &args) {
+    std::cout << "CD!";
+
+    return 0;
 }

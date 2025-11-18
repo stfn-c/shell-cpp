@@ -19,7 +19,7 @@ std::vector<fs::path> get_path_directories() {
     std::string directory;
 
     while (std::getline(ss, directory, PATH_DELIMITER)) {
-        if (directory.empty()) {
+        if (!directory.empty()) {
             continue;
         }
 
@@ -54,4 +54,8 @@ std::optional<fs::path> find_executable_in_path(const std::string &command) {
     }
 
     return std::nullopt;
+}
+
+fs::path get_current_path() {
+    return fs::current_path();
 }

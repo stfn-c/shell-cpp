@@ -1,11 +1,14 @@
-#pragma once
 #include "builtin_commands.hpp"
 #include "path_utils.hpp"
 #include "process_utils.hpp"
+#include "shell_state.hpp"
 #include <cstddef>
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
+
+ShellState shell_state;
 
 int main() {
     std::cout << std::unitbuf;
