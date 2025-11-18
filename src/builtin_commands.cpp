@@ -2,6 +2,7 @@
 #include "path_utils.hpp"
 #include "shell_state.hpp"
 #include <cstdlib>
+#include <filesystem>
 #include <iostream>
 
 const std::unordered_map<std::string, std::function<int(const std::vector<std::string> &)>>
@@ -62,7 +63,36 @@ int builtin_pwd(const std::vector<std::string> &args) {
 }
 
 int builtin_cd(const std::vector<std::string> &args) {
-    std::cout << "CD!";
+    fs::path target_dir;
+
+    if (args.empty()) {
+        const char *home = std::getenv("HOME");
+
+        if (!home) {
+            std::cerr << "cd: HOME not set\n";
+            return 1;
+        }
+
+        target_dir = home;
+    } else {
+        target_dir = args[0];
+    }
+
+    if (!target_dir.is_absolute()) {
+        target_dir = shell_state.current_directory / target_dir;
+    }
+
+    if (!fs::exists(target_dir)) {
+        std::cerr << "cd: " << args[0] << ": No such file or directory\n";
+        return 1;
+    }
+
+    if (!fs::is_directory(target_dir)) {
+        std::cerr << "cd: " << args[0] << ": Not a directory\n";
+        return 1;
+    }
+
+    shell_state.update_directory(target_dir);
 
     return 0;
 }
