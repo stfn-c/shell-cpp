@@ -19,7 +19,7 @@ std::vector<fs::path> get_path_directories() {
     std::string directory;
 
     while (std::getline(ss, directory, PATH_DELIMITER)) {
-        if (!directory.empty()) {
+        if (directory.empty()) {
             continue;
         }
 
