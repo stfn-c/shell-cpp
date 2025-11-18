@@ -62,6 +62,24 @@ int builtin_pwd(const std::vector<std::string> &args) {
     return 0;
 }
 
+std::string expand_tilde(const std::string &path) {
+    if (path.empty() || path[0] != '~') {
+        return path;
+    }
+
+    const char *home = std::getenv("HOME");
+
+    if (!home) {
+        return path;
+    }
+
+    if (path.length() == 1 || path[1] == '/') {
+        return std::string(home) + path.substr(1);
+    }
+
+    return path;
+}
+
 int builtin_cd(const std::vector<std::string> &args) {
     fs::path target_dir;
 
@@ -75,7 +93,7 @@ int builtin_cd(const std::vector<std::string> &args) {
 
         target_dir = home;
     } else {
-        target_dir = args[0];
+        target_dir = expand_tilde(args[0]);
     }
 
     if (!target_dir.is_absolute()) {
