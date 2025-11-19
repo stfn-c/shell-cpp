@@ -55,8 +55,18 @@ std::vector<std::string> parse_args(const std::string &input) {
             }
             break;
         case QuoteState::ESCAPE:
+            if (previous_state == QuoteState::DOUBLE) {
+                if (c == '"' || c == '\\' || c == '$' || c == '`' || c == '\n') {
+                    current_arg += c;
+                } else {
+                    current_arg += '\\';
+                    current_arg += c;
+                }
+            } else {
+                current_arg += c;
+            }
+
             quote_state = previous_state;
-            current_arg += c;
             break;
         }
     }
