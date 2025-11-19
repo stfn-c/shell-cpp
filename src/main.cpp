@@ -16,6 +16,7 @@ std::vector<std::string> parse_args(const std::string &input) {
     std::vector<std::string> args;
     std::string current_arg;
     QuoteState quote_state = QuoteState::NONE;
+    QuoteState previous_state = QuoteState::NONE;
 
     for (char c : input) {
         switch (quote_state) {
@@ -29,6 +30,9 @@ std::vector<std::string> parse_args(const std::string &input) {
                     args.push_back(current_arg);
                     current_arg.clear();
                 }
+            } else if (c == '\\') {
+                quote_state = QuoteState::ESCAPE;
+                previous_state = QuoteState::NONE;
             } else {
                 current_arg += c;
             }
@@ -43,12 +47,16 @@ std::vector<std::string> parse_args(const std::string &input) {
         case QuoteState::DOUBLE:
             if (c == '\"') {
                 quote_state = QuoteState::NONE;
+            } else if (c == '\\') {
+                quote_state = QuoteState::ESCAPE;
+                previous_state = QuoteState::DOUBLE;
             } else {
                 current_arg += c;
             }
             break;
         case QuoteState::ESCAPE:
-            std::cout << "not handled yet\n";
+            quote_state = previous_state;
+            current_arg += c;
             break;
         }
     }
